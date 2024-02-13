@@ -1,11 +1,20 @@
-import Express from "express";
+import 'dotenv/config';
+import express from "express";
+import cors from 'cors';
+import connectDB from "./db/conn.js";
+import authRoutes from './routes/auth.js';
 
-const app = Express();
-const port = 3000;
+// Connect to DB
+connectDB().then(() => console.log('Database successfully connected!'));
 
-app.get('/', (req, res) => {
-    res.send('I am a note app');
-});
+const app = express();
+const port = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(express.json());
+
+// Load routes
+app.use('/auth', authRoutes);
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
