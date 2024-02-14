@@ -5,7 +5,7 @@ const noteSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    body: {
+    text: {
         type: String
     }
 }, { timestamps: true });

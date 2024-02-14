@@ -3,6 +3,7 @@ import express from "express";
 import cors from 'cors';
 import connectDB from "./db/conn.js";
 import authRoutes from './routes/auth.js';
+import usersRoutes from './routes/users.js';
 
 // Connect to DB
 connectDB().then(() => console.log('Database successfully connected!'));
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Load routes
 app.use('/auth', authRoutes);
+app.use('/users', usersRoutes);
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
