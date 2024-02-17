@@ -49,7 +49,13 @@ const handleLogin = async (req, res) => {
 
 const handleSignup = async (req, res) => {
     try {
-        // Check if username is taken
+        if (req.body.username === '' || req.body.password === '')
+            return res.status(400).json({
+                status: 'error',
+                code: 400,
+                message: "Username and password can not be empty"
+            });
+
         const query = { username: req.body.username };
         const existingUser = await User.findOne(query);
 
@@ -72,7 +78,6 @@ const handleSignup = async (req, res) => {
         console.log(`User document was inserted with _id: ${result._id}`);
         res.status(201).json({
             status: 'success',
-            data: result,
             message: 'Registration successful',
         });
     }
