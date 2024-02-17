@@ -1,9 +1,19 @@
-function App() {
+import { useEffect, useState } from 'react';
+import Main from './components/Main';
+import Login from './components/Login';
+
+const App = () => {
+  const[token, setToken] = useState('');
+
+  useEffect(() => {
+    setToken(localStorage.getItem('access_token'));
+  }, []);
+
   return (
     <div className="App">
-      <h1>Hello</h1>
+      {token ? <Main token={token} /> : <Login setToken={setToken} />}
     </div>
   );
-}
+};
 
 export default App;
