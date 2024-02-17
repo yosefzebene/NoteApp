@@ -30,7 +30,9 @@ const getSingleNote = async (req, res) => {
 const getAllNotes = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).exec();
-        const notes = user.notes;
+        const notes = user.notes.sort((a, b) => {
+            return b.updatedAt.getTime() - a.updatedAt.getTime();
+        });
 
         res.status(200).json({
             status: 'success',
@@ -58,9 +60,13 @@ const createNote = async (req, res) => {
         user.notes.push(note);
         await user.save();
 
+        const result = user.notes.sort((a, b) => {
+            return b.updatedAt.getTime() - a.updatedAt.getTime();
+        });
+
         res.status(201).json({
             status: 'success',
-            data: user.notes
+            data: result
         });
     }
     catch (e) {
