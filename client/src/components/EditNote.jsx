@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import './EditNote.css';
 
 const EditNote = ({ note, setDisplayingSingleNote, token }) => {
     const [title, setTitle] = useState('');
@@ -33,23 +34,9 @@ const EditNote = ({ note, setDisplayingSingleNote, token }) => {
         setDisplayingSingleNote(false);
     };
 
-    const deleteNote = async () => {
-        const deleteNoteEndpoint = `http://localhost:5000/users/me/notes/${note._id}`
-        const payload = {
-            method: 'DELETE',
-            headers: {
-                'x-auth-token': token
-            },
-        };
-
-        await fetch(deleteNoteEndpoint, payload);
-
-        setDisplayingSingleNote(false);
-    }
-
     return (
-        <Form>
-            <Form.Group className="mb-3">
+        <Form className='edit-note-form'>
+            <Form.Group className="title-section">
                 <Form.Control
                     type="text"
                     placeholder="Title"
@@ -58,7 +45,7 @@ const EditNote = ({ note, setDisplayingSingleNote, token }) => {
                 />
             </Form.Group>
 
-            <Form.Group className="mb-3">
+            <Form.Group className="text-section">
                 <Form.Control
                     as="textarea"
                     rows={10}
@@ -67,8 +54,7 @@ const EditNote = ({ note, setDisplayingSingleNote, token }) => {
                 />
             </Form.Group>
 
-            <Button onClick={() => saveNote()}>Save</Button>
-            <Button onClick={() => deleteNote()} variant='danger'>Delete</Button>
+            <Button onClick={saveNote}>Save</Button>
         </Form>
     );
 };

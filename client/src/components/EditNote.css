@@ -1,0 +1,21 @@
+.edit-note-form .title-section input {
+    border-radius: 5px 5px 0 0;
+    border: none;
+    border-bottom: 1px solid black;
+    box-shadow: none;
+
+    background-color: #F3FFC6;
+
+    font-size: 20px;
+}
+
+.edit-note-form .text-section textarea {
+    height: 70vh;
+    border: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: none;
+
+    background-color: #F3FFC6;
+
+    font-size: 18px;
+}

@@ -53,7 +53,7 @@ const Notes = ({ token }) => {
                 'x-auth-token': token
             },
             body: JSON.stringify({
-                title: 'note',
+                title: 'New note',
                 text: ''
             })
         };
@@ -64,17 +64,34 @@ const Notes = ({ token }) => {
         });
     };
 
+    const deleteNote = async () => {
+        const deleteNoteEndpoint = `http://localhost:5000/users/me/notes/${singleNote._id}`
+        const payload = {
+            method: 'DELETE',
+            headers: {
+                'x-auth-token': token
+            },
+        };
+
+        await fetch(deleteNoteEndpoint, payload);
+
+        setDisplayingSingleNote(false);
+    }
+
     const onNoteClick = (id) => {
         getSingleNote(id);
         setDisplayingSingleNote(true);
     };
 
     return (
-        <Container fluid>
+        <Container fluid className='notes-container'>
             {
                 displayingSingleNote ?
                 <> 
-                    <Button onClick={() => setDisplayingSingleNote(false)}>Back</Button>
+                    <div className='edit-note-buttons-container'>
+                        <Button onClick={() => setDisplayingSingleNote(false)}>Back</Button>
+                        <Button onClick={deleteNote} className='delete-button'>Delete</Button>
+                    </div>
                     <EditNote note={singleNote} setDisplayingSingleNote={setDisplayingSingleNote} token={token} />
                 </>
                 :
@@ -88,7 +105,7 @@ const Notes = ({ token }) => {
                         {
                             allNotes.map(note => {
                                 return (
-                                    <Col key={note._id} xs={4} sm={4} md={3} lg={3} xl={3}>
+                                    <Col key={note._id} xs={6} sm={6} md={3} lg={3} xl={3} className='notes-column'>
                                         <NoteItem data={note} clickHandler={onNoteClick} />
                                     </Col>
                                 );

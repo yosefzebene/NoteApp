@@ -1,0 +1,32 @@
+.notes-container {
+    overflow-y: scroll;
+    height:calc(100% - 56px);
+}
+
+.notes-container .notes-column {
+    margin-bottom: 10px;
+}
+
+.notes-container button {
+    margin: 10px 0;
+    background-color: #306B34;
+    border-color: #306B34;
+}
+
+.notes-container button:hover, .notes-container button:focus, .notes-container button:active {
+    background-color: #4cac52;
+    box-shadow: none;
+}
+
+.notes-container .delete-button {
+    background-color: #d11414;
+}
+
+.notes-container .delete-button:hover, .notes-container .delete-button:focus, .notes-container .delete-button:active {
+    background-color: #db3939;
+}
+
+.notes-container .edit-note-buttons-container {
+    display: flex;
+    justify-content: space-between;
+}

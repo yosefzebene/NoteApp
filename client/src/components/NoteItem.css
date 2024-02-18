@@ -1,0 +1,11 @@
+.notes-container .notes-card {
+    height: 100%;
+    max-height: 250px;
+    background-color: #F3FFC6;
+}
+
+.notes-container .notes-card .card-text {
+    max-height: 200px;
+    white-space: pre-wrap;
+    overflow: hidden;
+}
