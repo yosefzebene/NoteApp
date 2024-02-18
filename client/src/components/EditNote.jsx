@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { editNote } from '../services/API';
 import './EditNote.css';
 
 const EditNote = ({ note, setDisplayingSingleNote, token }) => {
@@ -12,25 +13,8 @@ const EditNote = ({ note, setDisplayingSingleNote, token }) => {
         setText(note.text)
     }, [note])
 
-    const saveNote = async () => {
-        const editNoteEndpoint = `http://localhost:5000/users/me/notes/${note._id}`
-        const payload = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': token
-            },
-            body: JSON.stringify({
-                title: title,
-                text: text
-            }),
-        };
-
-        await fetch(editNoteEndpoint, payload).then(async (response) => {
-            const jsonResponse = await response.json();
-            console.log(jsonResponse);
-        });
-
+    const handleSaveClick = async () => {
+        await editNote(note._id, title, text, token);
         setDisplayingSingleNote(false);
     };
 
@@ -54,7 +38,7 @@ const EditNote = ({ note, setDisplayingSingleNote, token }) => {
                 />
             </Form.Group>
 
-            <Button onClick={saveNote}>Save</Button>
+            <Button onClick={handleSaveClick}>Save</Button>
         </Form>
     );
 };
