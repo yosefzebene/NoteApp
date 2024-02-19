@@ -11,7 +11,7 @@ const App = () => {
 
   return (
     <div className="App">
-      {token ? <Main token={token} /> : <Login setToken={setToken} />}
+      {token ? <Main token={token} setToken={setToken} /> : <Login setToken={setToken} />}
     </div>
   );
 };

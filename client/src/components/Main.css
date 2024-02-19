@@ -2,3 +2,13 @@
     background-color: #1C5253;
     height: 100vh;
 }
+
+.main-container nav button {
+    background-color: #306B34;
+    border-color: #306B34;
+}
+
+.main-container nav button:hover, .main-container nav button:focus, .main-container nav button:active {
+    background-color: #4cac52;
+    box-shadow: none;
+}
