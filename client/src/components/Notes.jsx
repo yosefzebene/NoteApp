@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
 import { useState, useEffect } from 'react';
 import NoteItem from './NoteItem';
 import EditNote from './EditNote';
@@ -9,6 +10,7 @@ import { getAllNotes, getSingleNote, createNote, deleteNote } from '../services/
 import './Notes.css';
 
 const Notes = ({ token }) => {
+    const [savedStatus, setSavedStatus] = useState(true);
     const [singleNote, setSingleNote] = useState({});
     const [allNotes, setAllNotes] = useState([]);
     const [displayingSingleNote, setDisplayingSingleNote] = useState(false);
@@ -36,6 +38,7 @@ const Notes = ({ token }) => {
 
     const onDeleteNoteClick = async () => {
         await deleteNote(singleNote._id, token);
+        setSingleNote({});
         setDisplayingSingleNote(false);
     };
 
@@ -45,10 +48,13 @@ const Notes = ({ token }) => {
                 displayingSingleNote ?
                 <> 
                     <div className='edit-note-buttons-container'>
-                        <Button onClick={() => setDisplayingSingleNote(false)}>Back</Button>
+                        <div>
+                            <Button onClick={() => setDisplayingSingleNote(false)}>Back</Button>
+                            <Badge bg={savedStatus ? 'success' : 'danger'} className='m-2'>{savedStatus ? 'Saved' : 'Not Saved'}</Badge>
+                        </div>
                         <Button onClick={onDeleteNoteClick} className='delete-button'>Delete</Button>
                     </div>
-                    <EditNote note={singleNote} setDisplayingSingleNote={setDisplayingSingleNote} token={token} />
+                    <EditNote note={singleNote} setSavedStatus={setSavedStatus} token={token} />
                 </>
                 :
                 <>

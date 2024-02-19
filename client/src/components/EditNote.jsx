@@ -1,22 +1,29 @@
-import { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useEffect, useState } from 'react';
 import { editNote } from '../services/API';
 import './EditNote.css';
 
-const EditNote = ({ note, setDisplayingSingleNote, token }) => {
+const EditNote = ({ note, setSavedStatus, token }) => {
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
 
     useEffect(() => {
         setTitle(note.title);
-        setText(note.text)
-    }, [note])
+        setText(note.text);
+    }, [note]);
 
-    const handleSaveClick = async () => {
-        await editNote(note._id, title, text, token);
-        setDisplayingSingleNote(false);
-    };
+    useEffect(() => {
+        const debounceTimer = setTimeout(async () => {
+            await editNote(note._id, title, text, token);
+            setSavedStatus(true);
+        }, 800);
+
+        setSavedStatus(false);
+
+        return () => {
+            clearTimeout(debounceTimer);
+        };
+    }, [note._id, token, setSavedStatus, title, text]);
 
     return (
         <Form className='edit-note-form'>
@@ -37,8 +44,6 @@ const EditNote = ({ note, setDisplayingSingleNote, token }) => {
                     onChange={(e) => setText(e.target.value)}
                 />
             </Form.Group>
-
-            <Button onClick={handleSaveClick}>Save</Button>
         </Form>
     );
 };
