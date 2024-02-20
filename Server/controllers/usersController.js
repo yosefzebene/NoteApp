@@ -19,9 +19,9 @@ const getSingleNote = async (req, res) => {
     }
     catch (e) {
         console.log(e.message);
-        res.status(400).json({
+        res.status(500).json({
             status: 'error',
-            code: 400,
+            code: 500,
             message: e.message
         });
     }
@@ -56,24 +56,32 @@ const createNote = async (req, res) => {
         const note = {
             title: req.body.title,
             text: req.body.text,
-        }
+        };
         user.notes.push(note);
-        await user.save();
 
-        const result = user.notes.sort((a, b) => {
-            return b.updatedAt.getTime() - a.updatedAt.getTime();
-        });
+        await user.save().then((user) => {
+            const result = user.notes.sort((a, b) => {
+                return b.updatedAt.getTime() - a.updatedAt.getTime();
+            });
 
-        res.status(201).json({
-            status: 'success',
-            data: result
+            res.status(201).json({
+                status: 'success',
+                data: result
+            });
+        })
+        .catch((e) => {
+            res.status(400).json({
+                status: 'error',
+                code: 400,
+                message: e.message,
+            });
         });
     }
     catch (e) {
         console.log(e);
-        res.status(400).json({
+        res.status(500).json({
             status: 'error',
-            code: 400,
+            code: 500,
             message: e.message,
         });
     }
@@ -85,26 +93,34 @@ const modifyNote = async (req, res) => {
         const note = user.notes.id(req.params.id);
 
         if (!note)
-            return res.status(400).json({
+            return res.status(404).json({
                 status: 'error',
-                code: 400,
+                code: 404,
                 message: "Resource does not exist",
             });
 
         note.title = req.body.title;
         note.text = req.body.text;
-        await user.save();
 
-        res.status(200).json({
-            status: 'success',
-            data: note
+        await user.save().then(() => {
+            res.status(200).json({
+                status: 'success',
+                data: note
+            });
+        })
+        .catch((e) => {
+            res.status(400).json({
+                status: 'error',
+                code: 400,
+                message: e.message,
+            });
         });
     }
     catch (e) {
         console.log(e.message);
-        res.status(400).json({
+        res.status(500).json({
             status: 'error',
-            code: 400,
+            code: 500,
             message: e.message
         });
     }
@@ -116,26 +132,33 @@ const deleteNote = async (req, res) => {
         const note = user.notes.id(req.params.id);
 
         if (!note)
-            return res.status(400).json({
+            return res.status(404).json({
                 status: 'error',
-                code: 400,
+                code: 404,
                 message: "Resource does not exist",
             });
 
         note.deleteOne();
-        await user.save();
-
-        res.status(200).json({
-            status: 'success',
-            data: note,
-            message: note.title + "has been deleted",
+        await user.save().then(() => {
+            res.status(200).json({
+                status: 'success',
+                data: note,
+                message: note.title + "has been deleted",
+            });
+        })
+        .catch((e) => {
+            res.status(400).json({
+                status: 'error',
+                code: 400,
+                message: e.message,
+            });
         });
     }
     catch (e) {
         console.log(e.message);
-        res.status(400).json({
+        res.status(500).json({
             status: 'error',
-            code: 400,
+            code: 500,
             message: e.message,
         });
     }

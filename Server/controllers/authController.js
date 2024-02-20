@@ -73,19 +73,26 @@ const handleSignup = async (req, res) => {
             password: await bcrypt.hash(req.body.password, salt),
         });
 
-        const result = await user.save();
-
-        console.log(`User document was inserted with _id: ${result._id}`);
-        res.status(201).json({
-            status: 'success',
-            message: 'Registration successful',
+        await user.save().then((result) => {
+            console.log(`User document was inserted with _id: ${result._id}`);
+            res.status(201).json({
+                status: 'success',
+                message: 'Registration successful',
+            });
+        })
+        .catch((e) => {
+            res.status(400).json({
+                status: 'error',
+                code: 400,
+                message: e.message,
+            });
         });
     }
     catch (e) {
         console.log(e.message);
-        res.status(400).json({
+        res.status(500).json({
             status: 'error',
-            code: 400,
+            code: 500,
             message: e.message,
         });
     }
