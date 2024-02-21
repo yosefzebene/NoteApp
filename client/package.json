@@ -1,6 +1,8 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "author": "Yosef Zebene",
+  "homepage": "https://yosefzebene.github.io/NoteApp/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
