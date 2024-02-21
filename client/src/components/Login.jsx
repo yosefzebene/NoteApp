@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import { useState } from 'react';
+import './Login.css';
 
 const Login = ({ setToken }) => {
     const [showMessage, setShowMessage] = useState(false);
@@ -60,7 +61,7 @@ const Login = ({ setToken }) => {
     };
 
     return(
-        <Form>
+        <Form className='login-form'>
             {showMessage && <Alert variant='info'>{Message}</Alert>}
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -82,15 +83,17 @@ const Login = ({ setToken }) => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <Form.Text className="text-muted">
-                    You can use this form to sign up.
+                    You can use this form to sign up. Please use a password that you don't use anywhere else! This is just a demo and is not very secure, so no sensitive information should be used.
                 </Form.Text>
             </Form.Group>
-            <Button variant="primary" onClick={handleLoginClick}>
-                Login
-            </Button>
-            <Button onClick={handleSignupClick}>
-                Signup
-            </Button>
+            <div className='login-form-buttons'>
+                <Button onClick={handleLoginClick} className='login'>
+                    Login
+                </Button>
+                <Button onClick={handleSignupClick} className='signup'>
+                    Signup
+                </Button>
+            </div>
         </Form>
     );
 };

@@ -1,0 +1,35 @@
+.login-form {
+    position: absolute;
+    margin: 0;
+    width: 50%;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.login-form-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-form-buttons .login {
+    background-color: #306B34;
+    border-color: #000000;
+}
+
+.login-form-buttons .login:hover, .login-form-buttons .login:focus, .login-form-buttons .login:active {
+    background-color: #4cac52;
+    box-shadow: none;
+}
+
+.login-form-buttons .signup {
+    color: #000000;
+    background-color: #F3FFC6;
+    border-color: #000000;
+}
+
+.login-form-buttons .signup:hover, .login-form-buttons .signup:focus, .login-form-buttons .signup:active {
+    background-color: #e6fb9c;
+    box-shadow: none;
+}
