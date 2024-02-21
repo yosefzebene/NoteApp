@@ -15,10 +15,18 @@ export const createNote = async (token) => {
         })
     };
 
-    const response = await fetch(createNoteEndpoint, payload);
-    const jsonResponse = await response.json();
+    var returnValue = [];
+    await fetch(createNoteEndpoint, payload).then(async (response) => {
+        const jsonResponse = await response.json();
 
-    return jsonResponse.data;
+        if (response.status === 201)
+            returnValue = jsonResponse.data;
+
+        if (response.status === 401)
+            throw new Error('Unauthorized access');
+    });
+
+    return returnValue;
 };
 
 export const getSingleNote = async (id, token) => {
@@ -29,10 +37,18 @@ export const getSingleNote = async (id, token) => {
         },
     };
 
-    const response = await fetch(getSingleNoteEndpoint, payload);
-    const jsonResponse = await response.json();
+    var returnValue = [];
+    await fetch(getSingleNoteEndpoint, payload).then(async (response) => {
+        const jsonResponse = await response.json();
 
-    return jsonResponse.data;
+        if (response.status === 200)
+            returnValue = jsonResponse.data;
+
+        if (response.status === 401)
+            throw new Error('Unauthorized access');
+    });
+
+    return returnValue;
 };
 
 export const getAllNotes = async (token) => {
@@ -43,10 +59,18 @@ export const getAllNotes = async (token) => {
         },
     };
 
-    const response = await fetch(getAllNotesEndpoint, payload);
-    const jsonResponse = await response.json();
+    var returnValue = [];
+    await fetch(getAllNotesEndpoint, payload).then(async (response) => {
+        const jsonResponse = await response.json();
 
-    return jsonResponse.data;
+        if (response.status === 200)
+            returnValue = jsonResponse.data;
+
+        if (response.status === 401)
+            throw new Error('Unauthorized access');
+    });
+
+    return returnValue;
 };
 
 export const editNote = async (id, title, text, token) => {
@@ -63,7 +87,10 @@ export const editNote = async (id, title, text, token) => {
         }),
     };
 
-    await fetch(editNoteEndpoint, payload);
+    await fetch(editNoteEndpoint, payload).then((response) => {
+        if (response.status === 401)
+            throw new Error('Unauthorized access');
+    });
 };
 
 export const deleteNote = async (id, token) => {
@@ -75,5 +102,8 @@ export const deleteNote = async (id, token) => {
         },
     };
 
-    await fetch(deleteNoteEndpoint, payload);
-}
+    await fetch(deleteNoteEndpoint, payload).then((response) => {
+        if (response.status === 401)
+            throw new Error('Unauthorized access');
+    });
+};

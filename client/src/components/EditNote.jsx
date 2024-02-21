@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { editNote } from '../services/API';
 import './EditNote.css';
 
-const EditNote = ({ note, setSavedStatus, token }) => {
+const EditNote = ({ note, setSavedStatus, handleTokenExpiry, token }) => {
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
 
@@ -14,7 +14,9 @@ const EditNote = ({ note, setSavedStatus, token }) => {
 
     useEffect(() => {
         const debounceTimer = setTimeout(async () => {
-            await editNote(note._id, title, text, token);
+            await editNote(note._id, title, text, token).catch(() => {
+                handleTokenExpiry();
+            });
             setSavedStatus(true);
         }, 800);
 
@@ -23,7 +25,7 @@ const EditNote = ({ note, setSavedStatus, token }) => {
         return () => {
             clearTimeout(debounceTimer);
         };
-    }, [note._id, token, setSavedStatus, title, text]);
+    }, [note._id, token, setSavedStatus, handleTokenExpiry, title, text]);
 
     return (
         <Form className='edit-note-form'>

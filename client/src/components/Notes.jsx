@@ -9,7 +9,7 @@ import EditNote from './EditNote';
 import { getAllNotes, getSingleNote, createNote, deleteNote } from '../services/API';
 import './Notes.css';
 
-const Notes = ({ token }) => {
+const Notes = ({ token, handleTokenExpiry }) => {
     const [savedStatus, setSavedStatus] = useState(true);
     const [singleNote, setSingleNote] = useState({});
     const [allNotes, setAllNotes] = useState([]);
@@ -17,27 +17,35 @@ const Notes = ({ token }) => {
 
     useEffect(() => {
         const callGetAllNotes = async () => {
-            const allNotes = await getAllNotes(token);
+            const allNotes = await getAllNotes(token).catch(() => {
+                handleTokenExpiry();
+            });
 
             setAllNotes(allNotes);
         };
 
         callGetAllNotes();
-    }, [token, displayingSingleNote]);
+    }, [token, displayingSingleNote, handleTokenExpiry]);
 
     const onNoteClick = async (id) => {
-        const result = await getSingleNote(id, token);
+        const result = await getSingleNote(id, token).catch(() => {
+            handleTokenExpiry();
+        });
         setSingleNote(result);
         setDisplayingSingleNote(true);
     };
 
     const onCreateNoteClick = async () => {
-        const result = await createNote(token);
+        const result = await createNote(token).catch(() => {
+            handleTokenExpiry();
+        });
         setAllNotes(result);
     };
 
     const onDeleteNoteClick = async () => {
-        await deleteNote(singleNote._id, token);
+        await deleteNote(singleNote._id, token).catch(() => {
+            handleTokenExpiry();
+        });
         setSingleNote({});
         setDisplayingSingleNote(false);
     };
@@ -54,7 +62,7 @@ const Notes = ({ token }) => {
                         </div>
                         <Button onClick={onDeleteNoteClick} className='delete-button'>Delete</Button>
                     </div>
-                    <EditNote note={singleNote} setSavedStatus={setSavedStatus} token={token} />
+                    <EditNote note={singleNote} setSavedStatus={setSavedStatus} handleTokenExpiry={handleTokenExpiry} token={token} />
                 </>
                 :
                 <>
