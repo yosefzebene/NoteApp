@@ -10,8 +10,10 @@ const Login = ({ setToken }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    const apiDomain = process.env.REACT_APP_API_DOMAIN;
+
     const handleLoginClick = async () => {
-        const loginEndpoint = 'http://localhost:5000/auth/login';
+        const loginEndpoint = `${apiDomain}/auth/login`;
         const payload = {
             method: 'POST',
             headers: {
@@ -40,7 +42,7 @@ const Login = ({ setToken }) => {
     };
 
     const handleSignupClick = async () => {
-        const signupEndpoint = 'http://localhost:5000/auth/signup';
+        const signupEndpoint = `${apiDomain}/auth/signup`;
         const payload = {
             method: 'POST',
             headers: {
