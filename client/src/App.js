@@ -6,7 +6,7 @@ const App = () => {
   const[token, setToken] = useState('');
 
   useEffect(() => {
-    setToken(localStorage.getItem('access_token'));
+    setToken(localStorage.getItem('token'));
   }, []);
 
   return (

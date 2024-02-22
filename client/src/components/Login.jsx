@@ -32,7 +32,7 @@ const Login = ({ setToken }) => {
                 const token = "Bearer " + jsonResponse.data.token
                 
                 setToken(token);
-                localStorage.setItem('access_token', token);
+                localStorage.setItem('token', token);
             }
             else if (response.status === 401) {
                 setMessage(jsonResponse.message);

@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 
 const Main = ({ token, setToken }) => {
     const handleLogoutAndTokenExpiry = useCallback(() => {
-        localStorage.removeItem('access_token');
+        localStorage.removeItem('token');
         setToken('');
     }, [setToken]);
 
