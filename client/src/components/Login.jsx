@@ -1,10 +1,12 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 import { useState } from 'react';
 import './Login.css';
 
 const Login = ({ setToken }) => {
+    const [loading, setLoading] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [Message, setMessage] = useState('');
     const [username, setUsername] = useState('');
@@ -13,6 +15,8 @@ const Login = ({ setToken }) => {
     const apiDomain = process.env.REACT_APP_API_DOMAIN;
 
     const handleLoginClick = async () => {
+        setLoading(true);
+
         const loginEndpoint = `${apiDomain}/auth/login`;
         const payload = {
             method: 'POST',
@@ -35,6 +39,7 @@ const Login = ({ setToken }) => {
                 localStorage.setItem('token', token);
             }
             else if (response.status === 401) {
+                setLoading(false);
                 setMessage(jsonResponse.message);
                 setShowMessage(true);
             }
@@ -42,6 +47,8 @@ const Login = ({ setToken }) => {
     };
 
     const handleSignupClick = async () => {
+        setLoading(true);
+
         const signupEndpoint = `${apiDomain}/auth/signup`;
         const payload = {
             method: 'POST',
@@ -57,6 +64,7 @@ const Login = ({ setToken }) => {
         await fetch(signupEndpoint, payload).then(async (response) => {
             const jsonResponse = await response.json();
 
+            setLoading(false);
             setMessage(jsonResponse.message);
             setShowMessage(true);
         });
@@ -92,6 +100,12 @@ const Login = ({ setToken }) => {
                 <Button onClick={handleLoginClick} className='login'>
                     Login
                 </Button>
+                {
+                    loading && 
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                }
                 <Button onClick={handleSignupClick} className='signup'>
                     Signup
                 </Button>
